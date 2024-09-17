@@ -4,36 +4,61 @@
     <div id="resume" class="d-flex">
       <div class="left-col">
         <div class="resume-section">
-          <img v-bind:src="imageUrl" class="profile-pic" alt="profile picture">
-          <div class="section-headline">
+          <img :src="imageUrl" class="profile-pic" alt="profile picture">
+          <h4 class="section-headline" contenteditable="true" @input="updateHeadline($event, 0)">
             {{ headlines[0] }}
-          </div>
-          <div>
+          </h4>
+          <div
+            contenteditable="true"
+            @input="updateProperty($event, 'introText')"          
+          >
             {{ introText }}
           </div>
         </div>
         <div class="resume-section">
-          <div class="section-headline">
+          <h4 class="section-headline" contenteditable="true" @input="updateHeadline($event, 1)">
             {{ headlines[1] }}
-          </div>
+          </h4>
           <ul>
-            <li>{{ contactInfo.phone }}</li>
-            <li>{{ contactInfo.email }}</li>
-            <li>{{ contactInfo.address }}</li>
+            <li 
+              contenteditable="true" 
+              @input="updateNestedProperty($event, 'contact', 'phone')"
+            >
+              {{ contact.phone }}
+            </li>
+            <li 
+              contenteditable="true" 
+              @input="updateNestedProperty($event, 'contact', 'email')"
+            >
+              {{ contact.email }}
+            </li>
+            <li 
+              contenteditable="true" 
+              @input="updateNestedProperty($event, 'contact', 'address')"
+            >
+              {{ contact.address }}
+            </li>
           </ul>
         </div>
         <div class="resume-section">
-          <div class="section-headline">
+          <h4 class="section-headline" contenteditable="true" @input="updateHeadline($event, 2)">
             {{ headlines[2] }}
-          </div>
+          </h4>
           <ul>
-            <li v-for="(skill, index) in skills" :key="index">{{ skill }}</li>
+            <li 
+              v-for="(skill, index) in skills" 
+              :key="index"
+              contenteditable="true"
+              @input="updateNestedProperty($event, 'skills', index)"
+            >
+            {{ skill }}
+          </li>
           </ul>
         </div>
         <div class="resume-section">
-          <div class="section-headline">
+          <h4 class="section-headline" contenteditable="true" @input="updateHeadline($event, 3)">
             {{ headlines[3] }}
-          </div>
+          </h4>
           <ul>
             <li>Data Analytics (General Assembly Online)</li>
             <li>Full-Stack Software Engineering (Prime Digital Academy)</li>
@@ -41,12 +66,21 @@
         </div>        
       </div>
       <div class="right-col">
-        <h4 class="personal-name">
+        <div
+          class="personal-name"
+          contenteditable="true"
+          @input="updateProperty($event, 'name')"
+        >
           {{ name }}
-        </h4>
-        <h4 class="personal-title">
+        </div>
+
+        <div
+          class="personal-title"
+          contenteditable="true"
+          @input="updateProperty($event, 'title')"
+        >
           {{ title }}
-        </h4>
+        </div>
         <h4 class="section-headline">
           Experience
         </h4>
@@ -137,6 +171,17 @@ export default {
         },
       
     }
+  },
+  methods: {
+    updateHeadline(event, index){
+      this.headlines[index] = event.target.innerText
+    },
+    updateProperty(event, key) {
+      this[key] = event.target.innerText;
+    },
+    updateNestedProperty(event, key1, key2) {
+      this[key1][key2] = event.target.innerText;
+    },
   }
 }
 </script>
