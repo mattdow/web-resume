@@ -5,7 +5,10 @@
       <div class="left-col">
         <ResumeSection>
           <img :src="imageUrl" class="profile-pic" alt="profile picture">
-          <SectionHeadline :headline="headlines[0]"/>         
+          <SectionHeadline 
+            :headline="headlines[0]" 
+            @headline-edited="updateHeadline($event, 0)"
+          />         
           <div
             contenteditable="true"
             @input="updateProperty($event, 'introText')"          
@@ -14,7 +17,10 @@
           </div>
         </ResumeSection>
         <ResumeSection>
-          <SectionHeadline :headline="headlines[1]"/>
+          <SectionHeadline 
+            :headline="headlines[1]" 
+            @headline-edited="updateHeadline($event, 1)"
+          />    
           <ul>
             <li 
               contenteditable="true" 
@@ -37,7 +43,10 @@
           </ul>
         </ResumeSection>
         <ResumeSection>
-          <SectionHeadline :headline="headlines[2]"/>
+          <SectionHeadline 
+            :headline="headlines[2]" 
+            @headline-edited="updateHeadline($event, 2)"
+          />    
           <ul>
             <li 
               v-for="(skill, index) in skills" 
@@ -50,7 +59,10 @@
           </ul>
         </ResumeSection>
         <ResumeSection>
-          <SectionHeadline :headline="headlines[3]"/>
+          <SectionHeadline 
+            :headline="headlines[3]" 
+            @headline-edited="updateHeadline($event, 3)"
+          />    
           <ul>
             <li
               v-for="(certification, index) in certifications"
@@ -79,7 +91,10 @@
         >
           {{ title }}
         </div>
-        <SectionHeadline :headline="headlines[4]"/>
+        <SectionHeadline 
+            :headline="headlines[4]" 
+            @headline-edited="updateHeadline($event, 4)"
+          />    
         <div 
           v-for="(item, index) in experience" 
           :key="index" 
@@ -110,7 +125,10 @@
           </ul>
         </div>
         
-        <SectionHeadline :headline="headlines[5]"/>
+        <SectionHeadline 
+            :headline="headlines[5]" 
+            @headline-edited="updateHeadline($event, 5)"
+          />    
         <div
           contenteditable="true"
           @input="updateNestedProperty($event, 'education', 'title')">
@@ -212,8 +230,8 @@ export default {
     }
   },
   methods: {
-    updateHeadline(event, index) {
-      this.headlines[index] = event.target.innerText
+    updateHeadline(newValue, index) {
+      this.headlines[index] = newValue
     },
     updateProperty(event, key) {
       this[key] = event.target.innerText;
