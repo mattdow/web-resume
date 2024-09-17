@@ -3,39 +3,47 @@
   <main class="container">
     <div id="resume" class="d-flex">
       <div class="left-col">
-        <h4 class="section-headline">
-          About Me
-        </h4>
-        <div>
-          Software development professional with expertise in mobile and web applications, blending technical acumen with strong problem-solving and collaboration skills. Proven ability to deliver impactful solutions by leveraging experience in both tech and customer-facing roles from a previous career in commercial property management.
+        <div class="resume-section">
+          <div class="section-headline">
+            About Me
+          </div>
+          <div>
+            Software development professional with expertise in mobile and web applications, blending technical acumen with strong problem-solving and collaboration skills. Proven ability to deliver impactful solutions by leveraging experience in both tech and customer-facing roles from a previous career in commercial property management.
+          </div>
         </div>
-        <h4 class="section-headline">
-          Contact
-        </h4>
-        <ul>
-          <li>1-651-587-8454</li>
-          <li>matt.dow.vo@gmail.com</li>
-          <li>514 Portland Avenue, Saint Paul, MN, 55102</li>
-        </ul>
-        <h4 class="section-headline">
-          Skills
-        </h4>
-        <ul>
-          <li>JavaScript</li>
-          <li>React</li>
-          <li>React Native</li>
-          <li>Vue</li>
-          <li>Node.js</li>
-          <li>Google Cloud Platform</li>
-          <li>SQL</li>
-        </ul>
-        <h4 class="section-headline">
-          Certifications
-        </h4>
-        <ul>
-          <li>Data Analytics (General Assembly Online)</li>
-          <li>Full-Stack Software Engineering (Prime Digital Academy)</li>
-        </ul>
+        <div class="resume-section">
+          <div class="section-headline">
+            Contact
+          </div>
+          <ul>
+            <li>651-587-8454</li>
+            <li>matt.dow.vo@gmail.com</li>
+            <li>514 Portland Avenue, Saint Paul, MN, 55102</li>
+          </ul>
+        </div>
+        <div class="resume-section">
+          <div class="section-headline">
+            Skills
+          </div>
+          <ul>
+            <li>JavaScript</li>
+            <li>React</li>
+            <li>React Native</li>
+            <li>Vue</li>
+            <li>Node.js</li>
+            <li>Google Cloud Platform</li>
+            <li>SQL</li>
+          </ul>
+        </div>
+        <div class="resume-section">
+          <div class="section-headline">
+            Certifications
+          </div>
+          <ul>
+            <li>Data Analytics (General Assembly Online)</li>
+            <li>Full-Stack Software Engineering (Prime Digital Academy)</li>
+          </ul>
+        </div>        
       </div>
       <div class="right-col">
         <h4 class="personal-name">
@@ -104,10 +112,6 @@
         <h4 class="section-headline">
           Education
         </h4>
-        <div>Certificate in Full Stack Software Engineering</div>
-        <div>Prime Digital Academy, 08/2021-01/2022</div>
-        <div>Certificate in Data Analytics</div>
-        <div>General Assembly, 06/2019-08/2019</div>
         <div>Courses taken toward a Chemical Engineering Degree</div>
         <div>University of Wisconsin-Madison, 1997-2001</div>        
       </div>
