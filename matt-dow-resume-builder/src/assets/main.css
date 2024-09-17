@@ -55,10 +55,6 @@ body {
   color: var(--highlight-color-left);
 }
 
-.resume-section {
-  margin-bottom: 30px;
-}
-
 .personal-name {
   font-weight: 300;
   color: var(--highlight-color-right);

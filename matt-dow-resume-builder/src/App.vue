@@ -3,22 +3,18 @@
   <main class="container">
     <div id="resume" class="d-flex">
       <div class="left-col">
-        <div class="resume-section">
+        <ResumeSection>
           <img :src="imageUrl" class="profile-pic" alt="profile picture">
-          <h4 class="section-headline" contenteditable="true" @input="updateHeadline($event, 0)">
-            {{ headlines[0] }}
-          </h4>
+          <SectionHeadline :headline="headlines[0]"/>         
           <div
             contenteditable="true"
             @input="updateProperty($event, 'introText')"          
           >
             {{ introText }}
           </div>
-        </div>
-        <div class="resume-section">
-          <h4 class="section-headline" contenteditable="true" @input="updateHeadline($event, 1)">
-            {{ headlines[1] }}
-          </h4>
+        </ResumeSection>
+        <ResumeSection>
+          <SectionHeadline :headline="headlines[1]"/>
           <ul>
             <li 
               contenteditable="true" 
@@ -39,11 +35,9 @@
               {{ contactInfo.address }}
             </li>
           </ul>
-        </div>
-        <div class="resume-section">
-          <h4 class="section-headline" contenteditable="true" @input="updateHeadline($event, 2)">
-            {{ headlines[2] }}
-          </h4>
+        </ResumeSection>
+        <ResumeSection>
+          <SectionHeadline :headline="headlines[2]"/>
           <ul>
             <li 
               v-for="(skill, index) in skills" 
@@ -54,11 +48,9 @@
             {{ skill }}
           </li>
           </ul>
-        </div>
-        <div class="resume-section">
-          <h4 class="section-headline" contenteditable="true" @input="updateHeadline($event, 3)">
-            {{ headlines[3] }}
-          </h4>
+        </ResumeSection>
+        <ResumeSection>
+          <SectionHeadline :headline="headlines[3]"/>
           <ul>
             <li
               v-for="(certification, index) in certifications"
@@ -69,7 +61,7 @@
               {{ certification }}
             </li>
           </ul>
-        </div>        
+        </ResumeSection>       
       </div>
       <div class="right-col">
         <div
@@ -87,9 +79,7 @@
         >
           {{ title }}
         </div>
-        <h4 class="section-headline" contenteditable="true" @input="updateHeadline($event, 4)">
-            {{ headlines[4] }}
-          </h4>
+        <SectionHeadline :headline="headlines[4]"/>
         <div 
           v-for="(item, index) in experience" 
           :key="index" 
@@ -120,12 +110,7 @@
           </ul>
         </div>
         
-        <h4 
-          class="section-headline" 
-          contenteditable="true" 
-          @input="updateHeadline($event, 5)">
-            {{ headlines[5] }}
-        </h4>
+        <SectionHeadline :headline="headlines[5]"/>
         <div
           contenteditable="true"
           @input="updateNestedProperty($event, 'education', 'title')">
@@ -156,7 +141,13 @@
 </template>
 
 <script>
+import ResumeSection from './components/ResumeSection.vue';
+import SectionHeadline from './components/SectionHeadline.vue';
 export default {
+  components: {
+    ResumeSection,
+    SectionHeadline,
+  },
   data() {
     return {
       name: "Matt Dow",
