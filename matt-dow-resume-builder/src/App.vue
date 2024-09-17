@@ -22,21 +22,21 @@
           <ul>
             <li 
               contenteditable="true" 
-              @input="updateNestedProperty($event, 'contact', 'phone')"
+              @input="updateNestedProperty($event, 'contactInfo', 'phone')"
             >
-              {{ contact.phone }}
+              {{ contactInfo.phone }}
             </li>
             <li 
               contenteditable="true" 
-              @input="updateNestedProperty($event, 'contact', 'email')"
+              @input="updateNestedProperty($event, 'contactInfo', 'email')"
             >
-              {{ contact.email }}
+              {{ contactInfo.email }}
             </li>
             <li 
               contenteditable="true" 
-              @input="updateNestedProperty($event, 'contact', 'address')"
+              @input="updateNestedProperty($event, 'contactInfo', 'address')"
             >
-              {{ contact.address }}
+              {{ contactInfo.address }}
             </li>
           </ul>
         </div>
@@ -60,8 +60,14 @@
             {{ headlines[3] }}
           </h4>
           <ul>
-            <li>Data Analytics (General Assembly Online)</li>
-            <li>Full-Stack Software Engineering (Prime Digital Academy)</li>
+            <li
+              v-for="(certification, index) in certifications"
+              :key="index"
+              contenteditable="true"
+              @input="updateNestedProperty($event, 'certifications', index)"
+            > 
+              {{ certification }}
+            </li>
           </ul>
         </div>        
       </div>
@@ -81,28 +87,69 @@
         >
           {{ title }}
         </div>
-        <h4 class="section-headline">
-          Experience
-        </h4>
-        <div v-for="(item, index) in experience" :key="index" class="inner-section">
-          <div>{{ item.title }}</div>
+        <h4 class="section-headline" contenteditable="true" @input="updateHeadline($event, 4)">
+            {{ headlines[4] }}
+          </h4>
+        <div 
+          v-for="(item, index) in experience" 
+          :key="index" 
+          class="inner-section">
+          <div
+            contenteditable="true"
+            @input="updateExperience($event, 'title', index)"
+          >{{ item.title }}
+          </div>
           <div class="d-flex justify-content-between">
-            <div>{{ item.company }}, {{ item.location }}</div>
-            <div>{{ item.date }}</div>
+            <div>
+              <span contenteditable="true" @input="updateExperience($event, 'company', index)">{{ item.company }}</span>,
+              <span contenteditable="true" @input="updateExperience($event, 'location', index)">{{ item.location }}</span>
+            </div>
+            <div
+              contenteditable="true"
+              @input="updateExperience($event, 'date', index)"
+            >{{ item.date }}</div>
           </div>
           <ul>
-            <li v-for="(desc, innerIndex) in item.description" :key="innerIndex">{{ desc }}</li>
+            <li 
+            v-for="(desc, innerIndex) in item.description" 
+            :key="innerIndex"
+            contenteditable="true"
+            @input="updateExperienceDescription($event, index, innerIndex)">
+            {{ desc }}
+          </li>
           </ul>
         </div>
         
-        <h4 class="section-headline">
-          Education
+        <h4 
+          class="section-headline" 
+          contenteditable="true" 
+          @input="updateHeadline($event, 5)">
+            {{ headlines[5] }}
         </h4>
-        <div>{{ education.title }}</div>
+        <div
+          contenteditable="true"
+          @input="updateNestedProperty($event, 'education', 'title')">
+          {{ education.title }}
+        </div>
         <div class="d-flex justify-content-between">
-          <div>{{ education.university }}</div>
-          <div>{{ education.date }}</div>
-        </div>  
+          <div>
+            <span
+              contenteditable="true"
+              @input="updateNestedProperty($event, 'education', 'university')">
+              {{ education.university }}
+            </span>,
+            <span
+              contenteditable="true"
+              @input="updateNestedProperty($event, 'education', 'location')">
+              {{ education.location }}
+            </span>
+          </div>
+          <div
+            contenteditable="true"
+            @input="updateNestedProperty($event, 'education', 'date')">
+            {{ education.date }}
+          </div>
+        </div> 
       </div>
     </div>
   </main>
@@ -123,6 +170,7 @@ export default {
         address: "514 Portland Avenue, Saint Paul, MN 55102"
       },
       skills: ["JavaScript", "React", "React Native", "Vue", "Node.js", "Google Cloud Platform", "SQL"],
+      certifications: ["Data Analytics (General Assembly Online)", "Full-Stack Software Engineering (Prime Digital Academy)"],
       experience: [
         {
           title: "Software Developer",
@@ -153,7 +201,7 @@ export default {
           title: "Real Estate Manager",
           company: "Ryan Companies",
           location: "Minneapolis, MN",
-          date: "2011 - 2020",
+          date: "09/2011 - 05/2020",
           description: [
             "Managed a 650,000 square foot class-A office building with two colleagues.",
             "Created a plan to sustain Ryan's culture as part of Ryan's 2015-16 Emerging Leaders Group.",
@@ -173,7 +221,7 @@ export default {
     }
   },
   methods: {
-    updateHeadline(event, index){
+    updateHeadline(event, index) {
       this.headlines[index] = event.target.innerText
     },
     updateProperty(event, key) {
@@ -181,6 +229,12 @@ export default {
     },
     updateNestedProperty(event, key1, key2) {
       this[key1][key2] = event.target.innerText;
+    },
+    updateExperience(event, key, index) {
+      this.experience[index][key] = event.target.innerText;
+    }, 
+    updateExperienceDescription(event, index1, index2) {
+      this.experience[index1]['description'][index2] = event.target.innerText;
     },
   }
 }
