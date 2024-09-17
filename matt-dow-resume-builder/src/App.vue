@@ -50,12 +50,12 @@
           Matt Dow
         </h4>
         <h4 class="personal-title">
-          Software Developer
+          Software Developer | Technical Support Engineer
         </h4>
         <h4 class="section-headline">
           Experience
         </h4>
-        <div>Software Developer | Technical Support Engineer</div>
+        <div>Software Developer</div>
         <div>BetterYou, Saint Paul, MN, 03/2022 - 07/2024</div>
         <ul>
           <li>
