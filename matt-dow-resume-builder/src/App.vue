@@ -55,7 +55,7 @@
         <h4 class="section-headline">
           Experience
         </h4>
-        <div>Software Developer</div>
+        <div>Software Developer | Technical Support Engineer</div>
         <div>BetterYou, Saint Paul, MN, 03/2022 - 07/2024</div>
         <ul>
           <li>
