@@ -83,3 +83,23 @@ body {
   margin-block-end: 0px;
   margin-block-start: 5px;
 }
+
+.profile-pic {
+  display: block;
+  width: 160px;
+  height: 160px;
+  border: 5px solid var(--highlight-color-left);
+  margin-bottom: 20px;
+  object-fit: cover;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 50%;
+}
+
+.inner-section {
+  margin-bottom: 20px;
+}
+
+.justify-content-between {
+  justify-content: space-between;
+}
