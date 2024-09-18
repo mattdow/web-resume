@@ -20,7 +20,8 @@
           <SectionHeadline 
             :headline="headlines[1]" 
             @headline-edited="updateHeadline($event, 1)"
-          />    
+          /> 
+          
           <ul>
             <li 
               contenteditable="true" 
@@ -161,10 +162,13 @@
 <script>
 import ResumeSection from './components/ResumeSection.vue';
 import SectionHeadline from './components/SectionHeadline.vue';
+import Contact from './components/Contact.vue';
+import Contact from './components/Contact.vue';
 export default {
   components: {
     ResumeSection,
     SectionHeadline,
+    Contact,
   },
   data() {
     return {
