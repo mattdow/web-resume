@@ -20,28 +20,11 @@
           <SectionHeadline 
             :headline="headlines[1]" 
             @headline-edited="updateHeadline($event, 1)"
-          /> 
-          
-          <ul>
-            <li 
-              contenteditable="true" 
-              @input="updateNestedProperty($event, 'contactInfo', 'phone')"
-            >
-              {{ contactInfo.phone }}
-            </li>
-            <li 
-              contenteditable="true" 
-              @input="updateNestedProperty($event, 'contactInfo', 'email')"
-            >
-              {{ contactInfo.email }}
-            </li>
-            <li 
-              contenteditable="true" 
-              @input="updateNestedProperty($event, 'contactInfo', 'address')"
-            >
-              {{ contactInfo.address }}
-            </li>
-          </ul>
+          />
+          <Contact
+            :contactInfo="contactInfo"
+            @edit="updateNestedProperty"
+          />          
         </ResumeSection>
         <ResumeSection>
           <SectionHeadline 
@@ -163,7 +146,6 @@
 import ResumeSection from './components/ResumeSection.vue';
 import SectionHeadline from './components/SectionHeadline.vue';
 import Contact from './components/Contact.vue';
-import Contact from './components/Contact.vue';
 export default {
   components: {
     ResumeSection,
@@ -180,7 +162,7 @@ export default {
       contactInfo: {
         phone: "651-587-8454",
         email: "matt.dow.vo@gmail.com",
-        address: "514 Portland Avenue, Saint Paul, MN 55102"
+        address: "514 Portland Avenue Saint Paul, MN 55102"
       },
       skills: ["JavaScript", "React", "React Native", "Vue", "Node.js", "Google Cloud Platform", "SQL"],
       certifications: ["Data Analytics (General Assembly Online)", "Full-Stack Software Engineering (Prime Digital Academy)"],
