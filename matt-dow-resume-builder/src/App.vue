@@ -236,8 +236,7 @@ export default {
           description: [
             "Rebuilt the app's sleep system in 2024, employing a new machine learning model and a new user-friendly interface to help users establish consistent bedtime routines.",
             "During the company's 2022 app and database overhaul, completely updated critical systems to modern development standards.",
-            "Designed and implemented seamless system integrations for aggregating health and wellness data from a variety of sources, including Apple Health, Google Fit, and wearable devices.",
-            "Led the Android app through a critical and time-sensitive Google Trust and Safety security assessment in May 2023, including the successful completion of a CASA security scan and subsequent thorough app review.",
+            "Designed and implemented seamless API integrations for aggregating health and wellness data from a variety of sources, including Apple Health, Google Fit, and wearable devices.",
             "Key Technologies Utilized: React Native, React Query, JavaScript, Node.js, Google Cloud Platform, Firebase, Swift, Java, Jest, and JUnit.",
           ]
         },
@@ -249,7 +248,6 @@ export default {
           description: [
             "Coordinated and collaborated with developers, project managers, and UX designers for the client to build a proof-of-concept software marketplace prototype in a two-week sprint.",
             "Following Prime graduation, assisted the client's engineering team to convert the codebase to TypeScript.",
-            "As a solo capstone project, created a disc golf score and note tracker.",
             "Technologies used: JavaScript, TypeScript, Node.js, Express, React.js, Redux, Saga, Chart.js, PostgreSQL, and Material-UI.",
           ]
         },
@@ -263,7 +261,6 @@ export default {
             "Created a plan to sustain Ryan's culture as part of Ryan's 2015-16 Emerging Leaders Group.",
             "Raised over $300,000 during dozens of events as co-ambassador of Ryan's 2016 United Way Week.",
             "Facilitated a full lease turnover and four major tenant improvement projects over two years as lead manager for a downtown office building.",
-            "Improved janitorial service, security, window cleaning, and elevator maintenance by crafting and enforcing contract language and regularly meeting with vendors.",
           ]
         }
       ],
