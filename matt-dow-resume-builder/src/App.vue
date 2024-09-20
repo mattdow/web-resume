@@ -38,9 +38,14 @@
               contenteditable="true"
               @input="updateNestedProperty($event, 'skills', index)"
             >
-            {{ skill }}
-          </li>
+              {{ skill }}
+            </li>
           </ul>
+          <EditButtons 
+            @add-click="skills.push('new entry')" 
+            @remove-click="skills.pop()"
+            :show-remove-btn="skills.length > 0"
+          />
         </ResumeSection>
         <ResumeSection>
           <SectionHeadline 
@@ -57,6 +62,11 @@
               {{ certification }}
             </li>
           </ul>
+          <EditButtons 
+            @add-click="certifications.push('new entry')" 
+            @remove-click="certifications.pop()"
+            :show-remove-btn="certifications.length > 0"
+          />
         </ResumeSection>       
       </div>
       <div class="right-col">
@@ -75,28 +85,47 @@
         >
           {{ title }}
         </div>
-        <SectionHeadline 
-            :headline="headlines[4]" 
-            @headline-edited="updateHeadline($event, 4)"
+        <div class="d-flex justify-content-between">
+          <SectionHeadline 
+              :headline="headlines[4]" 
+              @headline-edited="updateHeadline($event, 4)"
           />    
+          <EditButtons :show-remove-btn="false" @add-click="addExperience" text-add="Add Experience"/>
+        </div>
         <div 
           v-for="(item, index) in experience" 
           :key="index" 
           class="inner-section">
-          <div
+          <div class="d-flex justify-content-between">
+            <div
             contenteditable="true"
             @input="updateExperience($event, 'title', index)"
-          >{{ item.title }}
+            >
+            {{ item.title }}
+            </div>
+            <EditButtons @remove-click="removeExperience(index)" :show-add-btn="false" text-remove="Remove"/>
           </div>
+          
           <div class="d-flex justify-content-between">
             <div>
-              <span contenteditable="true" @input="updateExperience($event, 'company', index)">{{ item.company }}</span>,
-              <span contenteditable="true" @input="updateExperience($event, 'location', index)">{{ item.location }}</span>
+              <span contenteditable="true" 
+                @input="updateExperience($event, 'company', index)"
+              >
+                {{ item.company }}
+              </span>,
+              <span 
+                contenteditable="true" 
+                @input="updateExperience($event, 'location', index)"
+              >
+                {{ item.location }}
+              </span>
             </div>
             <div
               contenteditable="true"
               @input="updateExperience($event, 'date', index)"
-            >{{ item.date }}</div>
+            >
+              {{ item.date }}
+            </div>
           </div>
           <ul>
             <li 
@@ -107,36 +136,66 @@
             {{ desc }}
           </li>
           </ul>
+          <EditButtons
+            @add-click="item.description.push('new entry')"
+            @remove-click="item.description.pop()"
+            :show-remove-btn="item.description.length > 0"
+          />
         </div>
-        
-        <SectionHeadline 
+        <div class="d-flex">
+          <SectionHeadline 
             :headline="headlines[5]" 
             @headline-edited="updateHeadline($event, 5)"
-          />    
-        <div
-          contenteditable="true"
-          @input="updateNestedProperty($event, 'education', 'title')">
-          {{ education.title }}
+          />
+          <EditButtons :show-remove-btn="false" @add-click="addEducation"/>   
         </div>
-        <div class="d-flex justify-content-between">
-          <div>
-            <span
-              contenteditable="true"
-              @input="updateNestedProperty($event, 'education', 'university')">
-              {{ education.university }}
-            </span>,
-            <span
-              contenteditable="true"
-              @input="updateNestedProperty($event, 'education', 'location')">
-              {{ education.location }}
-            </span>
-          </div>
+         
           <div
-            contenteditable="true"
-            @input="updateNestedProperty($event, 'education', 'date')">
-            {{ education.date }}
+            v-for="(item, index) in education"
+            :key="index"
+            class="inner-section">
+            <div class="d-flex justify-content-between">
+              <div
+                contenteditable="true"
+                @input="updateEducation($event, 'title', index)"
+              >
+                {{ item.title }}
+              </div>
+              <EditButtons :show-add-btn="false" @remove-click="removeEducation" />
+            </div>
+            
+
+            <div class="d-flex justify-content-between">
+              <div>
+                <span
+                  contenteditable="true"
+                  @input="updateEducation($event, 'university', index)">
+                  {{ item.university }}
+                </span>,
+                <span
+                  contenteditable="true"
+                  @input="updateEducation($event, 'location', index)">
+                  {{ item.location }}
+                </span>
+              </div>
+
+              <div
+                contenteditable="true"
+                @input="updateEducation($event, 'date', index)">
+                {{ item.date }}
+              </div>
+            </div>
+            <ul>
+              <li
+                v-for="(desc, innerIndex) in item.description"
+                :key="innerIndex"
+                contenteditable="true"
+                @input="updateEducationDescription($event, index, innerIndex)">
+                {{ desc }}
+              </li>
+            </ul>
+
           </div>
-        </div> 
       </div>
     </div>
   </main>
@@ -146,11 +205,13 @@
 import ResumeSection from './components/ResumeSection.vue';
 import SectionHeadline from './components/SectionHeadline.vue';
 import Contact from './components/Contact.vue';
+import EditButtons from './components/EditButtons.vue';
 export default {
   components: {
     ResumeSection,
     SectionHeadline,
     Contact,
+    EditButtons,
   },
   data() {
     return {
@@ -206,12 +267,14 @@ export default {
           ]
         }
       ],
-      education: 
+      education: [
         {
           title: "Courses taken toward a Chemical Engineering Degree",
           university: "University of Wisconsin-Madison",
           date: "1997 - 2001",
+          description: [],
         },
+      ],
       
     }
   },
@@ -230,6 +293,40 @@ export default {
     }, 
     updateExperienceDescription(event, index1, index2) {
       this.experience[index1]['description'][index2] = event.target.innerText;
+    },
+    updateEducation(event, key, index) {
+      this.education[index][key] = event.target.innerText;
+    },
+    updateEducationDescription(event, index1, index2) {
+      this.education[index1]["description"][index2] = event.target.innerText;
+    },
+    addExperience() {
+      this.experience.unshift({
+        title: "Job Title",
+        company: "Company",
+        location: "Location",
+        date: "MM/YYYY - MM/YYYY",
+        description: [
+          "description"
+        ]
+      });
+    },
+    addEducation() {
+      this.education.unshift({
+        title: "Education Title",
+        university: "Institution",
+        location: "Location",
+        date: "date range",
+        description: [
+          "description"
+        ]
+      });
+    },
+    removeExperience(index) {
+      this.experience.splice(index, 1); 
+    },
+    removeEducation(index) {
+      this.education.splice(index, 1);
     },
   }
 }
