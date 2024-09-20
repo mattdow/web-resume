@@ -1,7 +1,7 @@
 <template>
   <label class="switch-wrapper">
     <div class="switch">
-      <input type="checkbox" checked @click="onToggle">
+      <input type="checkbox" @click="onToggle">
       <span class="slider"></span>
     </div>
     <span>Edit mode</span>
@@ -19,12 +19,16 @@ export default {
 </script>
 
 <style scoped>
+.switch-wrapper {
+  display: inline-flex;
+}
   /* The switch - the box around the slider */
 .switch {
   position: relative;
   display: inline-block;
-  width: 60px;
-  height: 34px;
+  width: 40px;
+  height: 25px;
+  margin-right: 10px;
 }
 
 /* Hide default HTML checkbox */
@@ -50,17 +54,17 @@ export default {
 .slider:before {
   position: absolute;
   content: "";
-  height: 26px;
-  width: 26px;
-  left: 4px;
-  bottom: 4px;
+  height: 16px;
+  width: 16px;
+  left: 6px;
+  bottom: 5px;
   background-color: white;
   -webkit-transition: .4s;
   transition: .4s;
 }
 
 input:checked + .slider {
-  background-color: #2196F3;
+  background-color: var(--color-black);
 }
 
 input:focus + .slider {
@@ -68,9 +72,9 @@ input:focus + .slider {
 }
 
 input:checked + .slider:before {
-  -webkit-transform: translateX(26px);
-  -ms-transform: translateX(26px);
-  transform: translateX(26px);
+  -webkit-transform: translateX(12px);
+  -ms-transform: translateX(12px);
+  transform: translateX(12px);
 }
 
 /* Rounded sliders */

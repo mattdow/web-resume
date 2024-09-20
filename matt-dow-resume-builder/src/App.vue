@@ -282,7 +282,7 @@ export default {
           description: [],
         },
       ],
-      editing: true,
+      editing: false,
     }
   },
   methods: {
