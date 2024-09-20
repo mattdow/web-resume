@@ -36,25 +36,6 @@ body {
   padding: 30px;
 }
 
-.section-headline {
-  font-size: 20px;
-  font-weight: var(--headline-weight);
-  margin-bottom: 15px;
-  margin-top: 0;
-}
-
-.right-col .section-headline {
-  color: var(--highlight-color-right);
-}
-
-.left-col .section-headline {
-  border-bottom: 1px solid var(--highlight-color-left);
-  padding-bottom: 5px;
-  margin-right: -30px;
-  padding-right: 10px;
-  color: var(--highlight-color-left);
-}
-
 .personal-name {
   font-weight: 300;
   color: var(--highlight-color-right);
@@ -98,4 +79,10 @@ body {
 
 .justify-content-between {
   justify-content: space-between;
+}
+
+[contenteditable="true"] {
+  border-radius: 2px;
+  background-color: #cacaca71;
+  padding: 2px;
 }
