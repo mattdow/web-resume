@@ -21,6 +21,7 @@ export default {
 <style scoped>
 .switch-wrapper {
   display: inline-flex;
+  align-items: center;
 }
   /* The switch - the box around the slider */
 .switch {

@@ -1,8 +1,15 @@
 
 <template>
   <main class="container">
-    <EditToggle @edit-mode-toggled="toggleEditMode" />
-    <div id="resume" class="d-flex" :class="{'edit-off': !editing}">
+    <Sidebar>
+      <EditToggle @edit-mode-toggled="toggleEditMode" />
+    </Sidebar>
+    <div 
+      id="resume" 
+      class="d-flex" 
+      :class="{'edit-off': !editing}"
+      :style="{'--highlight-color-right': colors.right.highlight}"    
+    >
       <div class="left-col">
         <ResumeSection>
           <img :src="imageUrl" class="profile-pic" alt="profile picture">
@@ -215,6 +222,7 @@ import SectionHeadline from './components/SectionHeadline.vue';
 import Contact from './components/Contact.vue';
 import EditButtons from './components/EditButtons.vue';
 import EditToggle from './components/EditToggle.vue';
+import Sidebar from './components/Sidebar.vue';
 export default {
   components: {
     ResumeSection,
@@ -222,9 +230,22 @@ export default {
     Contact,
     EditToggle,
     EditButtons,
+    Sidebar,
   },
   data() {
     return {
+      colors: {
+        left: {
+          highlight: '#82C0CC',
+          text: '#ffffff',
+          background: '#3943B7',
+        },
+        right: {
+          highlight: '#3943B7',
+          text: "#000505",
+          background: '#ffffff',
+        }
+      },
       name: "Matt Dow",
       title: "Software Developer | Technical Support Engineer",
       introText: "Software development professional with expertise in mobile and web applications, blending technical acumen with strong problem-solving and collaboration skills. Proven ability to deliver impactful solutions by leveraging experience in both tech and customer-facing roles from a previous career in commercial property management.",
@@ -345,10 +366,29 @@ export default {
 <style scoped>
   #resume {
     box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
-  /* DIN A4 standard paper size. commonly used for resumes
-  For North America letter size use width: 8.5in; height: 11in; */
-  height: 297mm;
-  width: 210mm;
+    /* DIN A4 standard paper size. commonly used for resumes
+    For North America letter size use width: 8.5in; height: 11in; */
+    width: 210mm;
+    margin-left: auto;
+  }
+
+  #resume.edit-off {
+    height: 297mm;
+  }
+
+  
+
+  @media (min-width: 1350px) {
+    #resume {
+      margin-left: 300px;
+    }
+  }
+
+  @media (min-width: 1600px) {
+    #resume {
+      margin-left: auto;
+      margin-right: auto;
+    }
   }
 
   .left-col {
