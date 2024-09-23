@@ -6,8 +6,19 @@
         @switch-toggled="toggleEditMode" 
         label="Edit mode" 
         :initialState="false"
+        off-label="Export Mode"
       />
-      <div class="sidebar-section">
+      <div class="sidebar-section" v-if="!editing">
+        <SelectInput
+          label="Resume format"
+          :options="[{'name': 'A4', 'value': 'a4'}, {'name': 'Letter', 'value': 'letter'}]"
+          :default-option="resumeFormat"
+          @update-selection="resumeFormat = $event"
+        />
+        <ExportPdf :resumeFormat="resumeFormat"/>
+      </div>
+      
+      <div class="sidebar-section" v-if="editing">
       <div class="sidebar-title">Left column</div>
         <ColorInput 
           label="Highlight color"
@@ -26,7 +37,7 @@
         />
       </div> 
 
-      <div class="sidebar-section">
+      <div class="sidebar-section" v-if="editing">
         <div class="sidebar-title">Right column</div>
         <ColorInput 
           label="Highlight color"
@@ -46,7 +57,7 @@
         />
       </div>
 
-      <div class="sidebar-section">
+      <div class="sidebar-section" v-if="editing">
         <PercentageInput 
           label="Width of left column" 
           :min="20" 
@@ -62,7 +73,7 @@
           @update-selection="headlineWeight = $event"
         />
       </div>
-      <div class="sidebar-section">
+      <div class="sidebar-section" v-if="editing">
         <ToggleSwitch @switch-toggled="toggleImageDisplay" label="Show photo" :initialState="true"/>
         <SelectInput
           v-if="showImage"
@@ -79,220 +90,222 @@
 
 
     </Sidebar>
-    <div 
-      id="resume" 
-      class="d-flex" 
-      :class="{'edit-off': !editing}"
-      :style="cssVariables"    
-    >
-      <div class="left-col" :style="{width: percentageWidthLeft}">
-        <ResumeSection>
-          <img 
-            v-if="showImage"
-            :src="imageUrl" 
-            class="profile-pic" 
-            :class="{'circle': imageShape === 'round'}"
-            alt="profile picture"
-          />
-          <SectionHeadline 
-            :headline="headlines[0]" 
-            @headline-edited="updateHeadline($event, 0)"
-            :editing="editing"
-          />         
-          <div
-            :contenteditable="editing"
-            @input="updateProperty($event, 'introText')"          
-          >
-            {{ introText }}
-          </div>
-        </ResumeSection>
-        <ResumeSection>
-          <SectionHeadline 
-            :headline="headlines[1]" 
-            @headline-edited="updateHeadline($event, 1)"
-            :editing="editing"
-          />
-          <Contact
-            :contactInfo="contactInfo"
-            :editing="editing"
-            @edit="updateNestedProperty"
-            :icon-color="colors.left.highlight"
-          />          
-        </ResumeSection>
-        <ResumeSection>
-          <SectionHeadline 
-            :headline="headlines[2]" 
-            @headline-edited="updateHeadline($event, 2)"
-            :editing="editing"
-          />    
-          <ul>
-            <li 
-              v-for="(skill, index) in skills" 
-              :key="index"
-              :contenteditable="editing"
-              @input="updateNestedProperty($event, 'skills', index)"
-            >
-              {{ skill }}
-            </li>
-          </ul>
-          <EditButtons 
-            @add-click="skills.push('new entry')" 
-            @remove-click="skills.pop()"
-            :show-remove-btn="skills.length > 0"
-          />
-        </ResumeSection>
-        <ResumeSection>
-          <SectionHeadline 
-            :headline="headlines[3]" 
-            @headline-edited="updateHeadline($event, 3)"
-            :editing="editing"
-          />    
-          <ul>
-            <li
-              v-for="(certification, index) in certifications"
-              :key="index"
-              :contenteditable="editing"
-              @input="updateNestedProperty($event, 'certifications', index)"
-            > 
-              {{ certification }}
-            </li>
-          </ul>
-          <EditButtons 
-            @add-click="certifications.push('new entry')" 
-            @remove-click="certifications.pop()"
-            :show-remove-btn="certifications.length > 0"
-          />
-        </ResumeSection>       
-      </div>
-      <div class="right-col">
-        <div
-          class="personal-name"
-          :contenteditable="editing"
-          @input="updateProperty($event, 'name')"
-        >
-          {{ name }}
-        </div>
-
-        <div
-          class="personal-title"
-          :contenteditable="editing"
-          @input="updateProperty($event, 'title')"
-        >
-          {{ title }}
-        </div>
-        <div class="d-flex justify-content-between">
-          <SectionHeadline 
-              :headline="headlines[4]" 
-              @headline-edited="updateHeadline($event, 4)"
+    <div id="resume-wrapper">    
+      <div 
+        id="resume" 
+        class="d-flex" 
+        :class="{'edit-off': !editing, 'letter-format': resumeFormat === 'letter'}"
+        :style="cssVariables"    
+      >
+        <div class="left-col" :style="{width: percentageWidthLeft}">
+          <ResumeSection>
+            <img 
+              v-if="showImage"
+              :src="imageUrl" 
+              class="profile-pic" 
+              :class="{'circle': imageShape === 'round'}"
+              alt="profile picture"
+            />
+            <SectionHeadline 
+              :headline="headlines[0]" 
+              @headline-edited="updateHeadline($event, 0)"
               :editing="editing"
-          />    
-          <EditButtons :show-remove-btn="false" @add-click="addExperience" text-add="Add Experience"/>
-        </div>
-        <div 
-          v-for="(item, index) in experience" 
-          :key="index" 
-          class="inner-section">
-          <div class="d-flex justify-content-between">
-            <div
-            :contenteditable="editing"
-            @input="updateExperience($event, 'title', index)"
-            >
-            {{ item.title }}
-            </div>
-            <EditButtons @remove-click="removeExperience(index)" :show-add-btn="false" text-remove="Remove"/>
-          </div>
-          
-          <div class="d-flex justify-content-between">
-            <div>
-              <span :contenteditable="editing" 
-                @input="updateExperience($event, 'company', index)"
-              >
-                {{ item.company }}
-              </span>,
-              <span 
-                :contenteditable="editing" 
-                @input="updateExperience($event, 'location', index)"
-              >
-                {{ item.location }}
-              </span>
-            </div>
+            />         
             <div
               :contenteditable="editing"
-              @input="updateExperience($event, 'date', index)"
+              @input="updateProperty($event, 'introText')"          
             >
-              {{ item.date }}
+              {{ introText }}
             </div>
-          </div>
-          <ul>
-            <li 
-            v-for="(desc, innerIndex) in item.description" 
-            :key="innerIndex"
-            :contenteditable="editing"
-            @input="updateExperienceDescription($event, index, innerIndex)">
-            {{ desc }}
-          </li>
-          </ul>
-          <EditButtons
-            @add-click="item.description.push('new entry')"
-            @remove-click="item.description.pop()"
-            :show-remove-btn="item.description.length > 0"
-          />
+          </ResumeSection>
+          <ResumeSection>
+            <SectionHeadline 
+              :headline="headlines[1]" 
+              @headline-edited="updateHeadline($event, 1)"
+              :editing="editing"
+            />
+            <Contact
+              :contactInfo="contactInfo"
+              :editing="editing"
+              @edit="updateNestedProperty"
+              :icon-color="colors.left.highlight"
+            />          
+          </ResumeSection>
+          <ResumeSection>
+            <SectionHeadline 
+              :headline="headlines[2]" 
+              @headline-edited="updateHeadline($event, 2)"
+              :editing="editing"
+            />    
+            <ul>
+              <li 
+                v-for="(skill, index) in skills" 
+                :key="index"
+                :contenteditable="editing"
+                @input="updateNestedProperty($event, 'skills', index)"
+              >
+                {{ skill }}
+              </li>
+            </ul>
+            <EditButtons 
+              @add-click="skills.push('new entry')" 
+              @remove-click="skills.pop()"
+              :show-remove-btn="skills.length > 0"
+            />
+          </ResumeSection>
+          <ResumeSection>
+            <SectionHeadline 
+              :headline="headlines[3]" 
+              @headline-edited="updateHeadline($event, 3)"
+              :editing="editing"
+            />    
+            <ul>
+              <li
+                v-for="(certification, index) in certifications"
+                :key="index"
+                :contenteditable="editing"
+                @input="updateNestedProperty($event, 'certifications', index)"
+              > 
+                {{ certification }}
+              </li>
+            </ul>
+            <EditButtons 
+              @add-click="certifications.push('new entry')" 
+              @remove-click="certifications.pop()"
+              :show-remove-btn="certifications.length > 0"
+            />
+          </ResumeSection>       
         </div>
-        <div class="d-flex">
-          <SectionHeadline 
-            :headline="headlines[5]" 
-            @headline-edited="updateHeadline($event, 5)"
-            :editing="editing"
-          />
-          <EditButtons :show-remove-btn="false" @add-click="addEducation"/>   
-        </div>
-         
+        <div class="right-col">
           <div
-            v-for="(item, index) in education"
-            :key="index"
+            class="personal-name"
+            :contenteditable="editing"
+            @input="updateProperty($event, 'name')"
+          >
+            {{ name }}
+          </div>
+
+          <div
+            class="personal-title"
+            :contenteditable="editing"
+            @input="updateProperty($event, 'title')"
+          >
+            {{ title }}
+          </div>
+          <div class="d-flex justify-content-between">
+            <SectionHeadline 
+                :headline="headlines[4]" 
+                @headline-edited="updateHeadline($event, 4)"
+                :editing="editing"
+            />    
+            <EditButtons :show-remove-btn="false" @add-click="addExperience" text-add="Add Experience"/>
+          </div>
+          <div 
+            v-for="(item, index) in experience" 
+            :key="index" 
             class="inner-section">
             <div class="d-flex justify-content-between">
               <div
-                :contenteditable="editing"
-                @input="updateEducation($event, 'title', index)"
+              :contenteditable="editing"
+              @input="updateExperience($event, 'title', index)"
               >
-                {{ item.title }}
+              {{ item.title }}
               </div>
-              <EditButtons :show-add-btn="false" @remove-click="removeEducation" />
+              <EditButtons @remove-click="removeExperience(index)" :show-add-btn="false" text-remove="Remove"/>
             </div>
             
-
             <div class="d-flex justify-content-between">
               <div>
-                <span
-                  :contenteditable="editing"
-                  @input="updateEducation($event, 'university', index)">
-                  {{ item.university }}
+                <span :contenteditable="editing" 
+                  @input="updateExperience($event, 'company', index)"
+                >
+                  {{ item.company }}
                 </span>,
-                <span
-                  :contenteditable="editing"
-                  @input="updateEducation($event, 'location', index)">
+                <span 
+                  :contenteditable="editing" 
+                  @input="updateExperience($event, 'location', index)"
+                >
                   {{ item.location }}
                 </span>
               </div>
-
               <div
                 :contenteditable="editing"
-                @input="updateEducation($event, 'date', index)">
+                @input="updateExperience($event, 'date', index)"
+              >
                 {{ item.date }}
               </div>
             </div>
             <ul>
-              <li
-                v-for="(desc, innerIndex) in item.description"
-                :key="innerIndex"
-                :contenteditable="editing"
-                @input="updateEducationDescription($event, index, innerIndex)">
-                {{ desc }}
-              </li>
+              <li 
+              v-for="(desc, innerIndex) in item.description" 
+              :key="innerIndex"
+              :contenteditable="editing"
+              @input="updateExperienceDescription($event, index, innerIndex)">
+              {{ desc }}
+            </li>
             </ul>
-
+            <EditButtons
+              @add-click="item.description.push('new entry')"
+              @remove-click="item.description.pop()"
+              :show-remove-btn="item.description.length > 0"
+            />
           </div>
+          <div class="d-flex">
+            <SectionHeadline 
+              :headline="headlines[5]" 
+              @headline-edited="updateHeadline($event, 5)"
+              :editing="editing"
+            />
+            <EditButtons :show-remove-btn="false" @add-click="addEducation"/>   
+          </div>
+          
+            <div
+              v-for="(item, index) in education"
+              :key="index"
+              class="inner-section">
+              <div class="d-flex justify-content-between">
+                <div
+                  :contenteditable="editing"
+                  @input="updateEducation($event, 'title', index)"
+                >
+                  {{ item.title }}
+                </div>
+                <EditButtons :show-add-btn="false" @remove-click="removeEducation" />
+              </div>
+              
+
+              <div class="d-flex justify-content-between">
+                <div>
+                  <span
+                    :contenteditable="editing"
+                    @input="updateEducation($event, 'university', index)">
+                    {{ item.university }}
+                  </span>,
+                  <span
+                    :contenteditable="editing"
+                    @input="updateEducation($event, 'location', index)">
+                    {{ item.location }}
+                  </span>
+                </div>
+
+                <div
+                  :contenteditable="editing"
+                  @input="updateEducation($event, 'date', index)">
+                  {{ item.date }}
+                </div>
+              </div>
+              <ul>
+                <li
+                  v-for="(desc, innerIndex) in item.description"
+                  :key="innerIndex"
+                  :contenteditable="editing"
+                  @input="updateEducationDescription($event, index, innerIndex)">
+                  {{ desc }}
+                </li>
+              </ul>
+
+            </div>
+        </div>
       </div>
     </div>
   </main>
@@ -309,6 +322,7 @@ import PercentageInput from './components/PercentageInput.vue';
 import SelectInput from './components/SelectInput.vue';
 import ImageUpload from './components/ImageUpload.vue';
 import ToggleSwitch from './components/ToggleSwitch.vue';
+import ExportPdf from './components/ExportPdf.vue';
 export default {
   components: {
     ResumeSection,
@@ -321,6 +335,7 @@ export default {
     PercentageInput,
     SelectInput,
     ImageUpload,
+    ExportPdf,
   },
   data() {
     return {
@@ -379,7 +394,7 @@ export default {
           date: "09/2011 - 05/2020",
           description: [
             "Managed a 650,000 square foot class-A office building with two colleagues.",
-            "Created a plan to sustain Ryan's culture as part of Ryan's 2015-16 Emerging Leaders Group.",
+            "Created a plan to sustain Ryan's culture as part of Ryan's 2016 Emerging Leaders Group.",
             "Raised over $300,000 during dozens of events as co-ambassador of Ryan's 2016 United Way Week.",
             "Facilitated a full lease turnover and four major tenant improvement projects over two years as lead manager for a downtown office building.",
           ]
@@ -398,6 +413,7 @@ export default {
       imageShape: "round",
       headlineWeight: "400",
       showImage: true,
+      resumeFormat: 'a4',
     }
   },
   computed: {
@@ -477,22 +493,31 @@ export default {
 </script>
 
 <style scoped>
+
+  .resume-wrapper {
+    margin-left: auto;
+    width: 210mm;
+  }
+
   #resume {
     box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
     /* DIN A4 standard paper size. commonly used for resumes
     For North America letter size use width: 8.5in; height: 11in; */
-    width: 210mm;
-    margin-left: auto;
   }
 
   #resume.edit-off {
     height: 297mm;
   }
 
+  #resume.edit-off.letter-format {
+    width: 8.5in;
+    height: 11in;
+  }
+
   
 
   @media (min-width: 1350px) {
-    #resume {
+    #resume-wrapper {
       margin-left: 300px;
     }
   }
