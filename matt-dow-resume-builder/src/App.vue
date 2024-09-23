@@ -34,7 +34,15 @@
       <ColorInput 
         label="Text color"
         :default-color="colors.right.text"
-        @color-changed="colors.right.text = $event" 
+        @color-changed="colors.right.text = $event"
+        :current-value="widthLeft" 
+      />
+      <PercentageInput 
+        label="Width of left column" 
+        :min="20" 
+        :max="80"
+        :currentValue="widthLeft"
+        @percentage-changed="widthLeft = $event"
       />
     </Sidebar>
     <div 
@@ -43,7 +51,7 @@
       :class="{'edit-off': !editing}"
       :style="cssVariables"    
     >
-      <div class="left-col">
+      <div class="left-col" :style="{width: percentageWidthLeft}">
         <ResumeSection>
           <img :src="imageUrl" class="profile-pic" alt="profile picture">
           <SectionHeadline 
@@ -68,6 +76,7 @@
             :contactInfo="contactInfo"
             :editing="editing"
             @edit="updateNestedProperty"
+            :icon-color="colors.left.highlight"
           />          
         </ResumeSection>
         <ResumeSection>
@@ -257,6 +266,7 @@ import EditButtons from './components/EditButtons.vue';
 import EditToggle from './components/EditToggle.vue';
 import Sidebar from './components/Sidebar.vue';
 import ColorInput from './components/ColorInput.vue';
+import PercentageInput from './components/PercentageInput.vue';
 export default {
   components: {
     ResumeSection,
@@ -266,6 +276,7 @@ export default {
     EditButtons,
     Sidebar,
     ColorInput,
+    PercentageInput,
   },
   data() {
     return {
@@ -339,6 +350,9 @@ export default {
         },
       ],
       editing: false,
+      widthLeft: 30,
+      imageShape: "round",
+      headlineWeight: "400",
     }
   },
   computed: {
@@ -351,6 +365,9 @@ export default {
         '--background-color-right': this.colors.right.background,
         '--text-color-right': this.colors.right.text
       }
+    },
+    percentageWidthLeft() {
+      return this.widthLeft + "%";
     }
   },
   methods: {
