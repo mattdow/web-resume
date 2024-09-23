@@ -44,6 +44,21 @@
         :currentValue="widthLeft"
         @percentage-changed="widthLeft = $event"
       />
+
+      <SelectInput
+        label="Headline thickness"
+        :options="[{'name': 'Thin', 'value': '300'}, {'name': 'Medium', 'value': '400'}, {'name': 'Thick', 'value': '600'}]"
+        :default-option="headlineWeight"
+        @update-selection="headlineWeight = $event"
+      />
+
+      <SelectInput
+        label="Photo shape"
+        :options="[{'name': 'Square', 'value': 'square'}, {'name': 'Round', 'value': 'round'}]"
+        :default-option="imageShape"
+        @update-selection="imageShape = $event"
+      />
+
     </Sidebar>
     <div 
       id="resume" 
@@ -53,7 +68,12 @@
     >
       <div class="left-col" :style="{width: percentageWidthLeft}">
         <ResumeSection>
-          <img :src="imageUrl" class="profile-pic" alt="profile picture">
+          <img 
+            :src="imageUrl" 
+            class="profile-pic" 
+            :class="{'circle': imageShape === 'round'}"
+            alt="profile picture"
+          />
           <SectionHeadline 
             :headline="headlines[0]" 
             @headline-edited="updateHeadline($event, 0)"
@@ -267,6 +287,7 @@ import EditToggle from './components/EditToggle.vue';
 import Sidebar from './components/Sidebar.vue';
 import ColorInput from './components/ColorInput.vue';
 import PercentageInput from './components/PercentageInput.vue';
+import SelectInput from './components/SelectInput.vue';
 export default {
   components: {
     ResumeSection,
@@ -277,6 +298,7 @@ export default {
     Sidebar,
     ColorInput,
     PercentageInput,
+    SelectInput,
   },
   data() {
     return {
@@ -363,7 +385,8 @@ export default {
         '--text-color-left': this.colors.left.text,
         '--highlight-color-right': this.colors.right.highlight,
         '--background-color-right': this.colors.right.background,
-        '--text-color-right': this.colors.right.text
+        '--text-color-right': this.colors.right.text,
+        '--headline-weight': this.headlineWeight,
       }
     },
     percentageWidthLeft() {
