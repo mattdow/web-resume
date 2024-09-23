@@ -5,7 +5,7 @@
       <ToggleSwitch 
         @switch-toggled="toggleEditMode" 
         label="Edit mode" 
-        :initialState="false"
+        :initialState="editing"
         off-label="Export Mode"
       />
       <div class="sidebar-section" v-if="!editing">
@@ -60,7 +60,7 @@
       <div class="sidebar-section" v-if="editing">
         <PercentageInput 
           label="Width of left column" 
-          :min="20" 
+          :min="20"
           :max="80"
           :currentValue="widthLeft"
           @percentage-changed="widthLeft = $event"
@@ -74,7 +74,7 @@
         />
       </div>
       <div class="sidebar-section" v-if="editing">
-        <ToggleSwitch @switch-toggled="toggleImageDisplay" label="Show photo" :initialState="true"/>
+        <ToggleSwitch @switch-toggled="toggleImageDisplay" label="Show photo" :initialState="showImage"/>
         <SelectInput
           v-if="showImage"
           label="Photo shape"
@@ -90,7 +90,10 @@
 
 
     </Sidebar>
-    <div id="resume-wrapper">    
+    <div id="resume-wrapper">
+      <CustomButton btn-type="primary-right" @click="saveWork">
+        Save current work in browser
+      </CustomButton>    
       <div 
         id="resume" 
         class="d-flex" 
@@ -323,7 +326,19 @@ import SelectInput from './components/SelectInput.vue';
 import ImageUpload from './components/ImageUpload.vue';
 import ToggleSwitch from './components/ToggleSwitch.vue';
 import ExportPdf from './components/ExportPdf.vue';
+import CustomButton from './components/CustomButton.vue';
 export default {
+  created() {
+    const savedResume = localStorage.getItem('resume');
+    if(savedResume) {
+      try {
+        const resume = JSON.parse(savedResume);
+        this.loadIntoData(resume);
+      } catch(error) {
+        console.error("error parsing saved resume information")
+      }
+    }
+  },
   components: {
     ResumeSection,
     SectionHeadline,
@@ -336,6 +351,7 @@ export default {
     SelectInput,
     ImageUpload,
     ExportPdf,
+    CustomButton,
   },
   data() {
     return {
@@ -487,6 +503,16 @@ export default {
     },
     toggleImageDisplay(isChecked) {
       this.showImage = isChecked;
+    },
+    saveWork() {      
+      localStorage.setItem('resume', JSON.stringify(this.$data))
+    },
+    loadIntoData(savedData) {
+      for(const key in savedData) {
+        if(this.$data.hasOwnProperty(key)) {
+          this[key] = savedData[key]
+        }
+      }
     }
   }
 }

@@ -21,11 +21,11 @@
       },
       min: {
         type: Number,
-        default: 0
+        default: 0,
       },
       max: {
         type: Number,
-        default: 100
+        default: 100,
       },
       currentValue: {
         type: Number,

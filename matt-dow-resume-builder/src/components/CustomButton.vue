@@ -48,6 +48,13 @@
   background-color: var(--color-black);
   color: white;
 }
+.btn-primary-right {
+  background-color: var(--color-black);
+  color: white;
+  width: auto;
+  margin-left: auto;
+  margin-bottom: 20px
+}
 
 .btn-primary:hover {
   background-color: var(--color-black);
