@@ -4,6 +4,7 @@
       type="color"
       class="color-picker"
       @input="$emit('colorChanged', $event.target.value)"
+      :value="defaultColor"
     >
     {{ label }}
   </label>

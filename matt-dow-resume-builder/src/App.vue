@@ -3,17 +3,45 @@
   <main class="container">
     <Sidebar>
       <EditToggle @edit-mode-toggled="toggleEditMode" />
+      <div>Left column</div>
+      <ColorInput 
+        label="Highlight color"
+        :default-color="colors.left.highlight"
+        @color-changed="colors.left.highlight = $event" 
+      />
+      <ColorInput 
+        label="Background color"
+        :default-color="colors.left.background"
+        @color-changed="colors.left.background = $event" 
+      />
+      <ColorInput 
+        label="Text color"
+        :default-color="colors.left.text"
+        @color-changed="colors.left.text = $event" 
+      />
+      
+      <div>Right column</div>
       <ColorInput 
         label="Highlight color"
         :default-color="colors.right.highlight"
-        @color-changed="colors.right.highlight = $event"  
+        @color-changed="colors.right.highlight = $event" 
+      />
+      <ColorInput 
+        label="Background color"
+        :default-color="colors.right.background"
+        @color-changed="colors.right.background = $event" 
+      />
+      <ColorInput 
+        label="Text color"
+        :default-color="colors.right.text"
+        @color-changed="colors.right.text = $event" 
       />
     </Sidebar>
     <div 
       id="resume" 
       class="d-flex" 
       :class="{'edit-off': !editing}"
-      :style="{'--highlight-color-right': colors.right.highlight}"    
+      :style="cssVariables"    
     >
       <div class="left-col">
         <ResumeSection>
