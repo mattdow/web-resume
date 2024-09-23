@@ -3,6 +3,11 @@
   <main class="container">
     <Sidebar>
       <EditToggle @edit-mode-toggled="toggleEditMode" />
+      <ColorInput 
+        label="Highlight color"
+        :default-color="colors.right.highlight"
+        @color-changed="colors.right.highlight = $event"  
+      />
     </Sidebar>
     <div 
       id="resume" 
@@ -223,6 +228,7 @@ import Contact from './components/Contact.vue';
 import EditButtons from './components/EditButtons.vue';
 import EditToggle from './components/EditToggle.vue';
 import Sidebar from './components/Sidebar.vue';
+import ColorInput from './components/ColorInput.vue';
 export default {
   components: {
     ResumeSection,
@@ -231,6 +237,7 @@ export default {
     EditToggle,
     EditButtons,
     Sidebar,
+    ColorInput,
   },
   data() {
     return {
@@ -304,6 +311,18 @@ export default {
         },
       ],
       editing: false,
+    }
+  },
+  computed: {
+    cssVariables() {
+      return {
+        '--highlight-color-left': this.colors.left.highlight,
+        '--background-color-left': this.colors.left.background,
+        '--text-color-left': this.colors.left.text,
+        '--highlight-color-right': this.colors.right.highlight,
+        '--background-color-right': this.colors.right.background,
+        '--text-color-right': this.colors.right.text
+      }
     }
   },
   methods: {
