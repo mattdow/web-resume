@@ -1,18 +1,34 @@
 <template>
   <label class="switch-wrapper">
     <div class="switch">
-      <input type="checkbox" @click="onToggle">
+      <input 
+        type="checkbox" 
+        @click="onToggle"
+        :checked="initialState"
+      >
       <span class="slider"></span>
     </div>
-    <span>Edit mode</span>
+    <span>
+      {{ label }}
+    </span>
   </label>
 </template>
 
 <script>
 export default {
+  props: {
+    label: {
+      type: String
+    },
+    initialState: {
+      type: Boolean,
+      default: false,
+    },
+  },
+
     methods: {
         onToggle(event) {
-            this.$emit("editModeToggled", event.target.checked)
+            this.$emit("switchToggled", event.target.checked)
         }
     }
 }
