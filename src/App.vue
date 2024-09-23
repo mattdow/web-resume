@@ -370,7 +370,7 @@ export default {
       name: "Matt Dow",
       title: "Software Developer | Technical Support Engineer",
       introText: "Software development professional with expertise in mobile and web applications, blending technical acumen with strong problem-solving and collaboration skills. Proven ability to deliver impactful solutions by leveraging experience in both tech and customer-facing roles from a previous career in commercial property management.",
-      imageUrl: "/assets/matt_dow_headshot.jpg",
+      imageUrl: "/web-resume/matt_dow_headshot.jpg",
       headlines: ["About me", "Contact", "Skills", "Certifications", "Experience", "Education"],
       contactInfo: {
         phone: "651-587-8454",
